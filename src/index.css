@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+input, textarea {
+  font-family: inherit;
+}
+
+input:focus, textarea:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Ensure text is always readable */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Prevent text selection issues */
+::selection {
+  background-color: #3b82f6;
+  color: white;
+}
