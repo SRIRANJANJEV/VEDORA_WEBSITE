@@ -3,32 +3,53 @@ import { useEffect, useState } from 'react'
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState('home')
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50)
+
+      // Track active section for highlighting
+      const sections = ['hero', 'services', 'solutions', 'projects', 'about', 'founders', 'contact']
+      const scrollPosition = window.scrollY + 100
+
+      for (const section of sections) {
+        const element = document.getElementById(section)
+        if (element) {
+          const { offsetTop, offsetHeight } = element
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(section)
+            break
+          }
+        }
+      }
     }
 
     window.addEventListener('scroll', handleScroll)
+    handleScroll() // Initial check
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   const scrollToSection = (sectionId: string) => {
-    const element = document.querySelector(sectionId)
+    const element = document.getElementById(sectionId)
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
+      const offset = 80 // Account for fixed header
+      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
+      window.scrollTo({
+        top: elementPosition - offset,
+        behavior: 'smooth'
+      })
       setIsMobileMenuOpen(false)
     }
   }
 
   const navLinks = [
-    { name: 'Home', target: '.hero-section' },
-    { name: 'About', target: '.section:nth-of-type(4)' },
-    { name: 'Services', target: '.section:nth-of-type(1)' },
-    { name: 'Solutions', target: '.section:nth-of-type(2)' },
-    { name: 'Projects', target: '.section:nth-of-type(3)' },
-    { name: 'Founders', target: '.section:nth-of-type(5)' },
-    { name: 'Contact', target: '.section:nth-of-type(6)' },
+    { name: 'Home', target: 'hero' },
+    { name: 'About', target: 'about' },
+    { name: 'Services', target: 'services' },
+    { name: 'Solutions', target: 'solutions' },
+    { name: 'Projects', target: 'projects' },
+    { name: 'Contact', target: 'contact' },
   ]
 
   return (
@@ -38,17 +59,17 @@ export default function Navigation() {
         top: 0,
         width: '100%',
         zIndex: 50,
-        transition: 'all 0.3s',
-        backgroundColor: isScrolled ? 'rgba(10, 14, 26, 0.9)' : 'transparent',
-        backdropFilter: isScrolled ? 'blur(12px)' : 'none',
-        boxShadow: isScrolled ? '0 10px 15px -3px rgba(0, 0, 0, 0.3)' : 'none',
+        transition: 'all 0.3s ease',
+        backgroundColor: isScrolled ? 'rgba(10, 14, 26, 0.95)' : 'transparent',
+        backdropFilter: isScrolled ? 'blur(16px)' : 'none',
+        boxShadow: isScrolled ? '0 4px 20px rgba(0, 0, 0, 0.4)' : 'none',
       }}
     >
       <div
         style={{
           maxWidth: '80rem',
           margin: '0 auto',
-          padding: '0 1.5rem',
+          padding: '0 2rem',
           height: '5rem',
           display: 'flex',
           alignItems: 'center',
@@ -71,7 +92,7 @@ export default function Navigation() {
             style={{
               height: '2.5rem',
               width: 'auto',
-              filter: 'drop-shadow(0 0 10px rgba(59, 130, 246, 0.3))',
+              filter: 'drop-shadow(0 0 12px rgba(59, 130, 246, 0.4))',
             }}
             onError={(e) => {
               e.currentTarget.style.display = 'none'
@@ -80,8 +101,9 @@ export default function Navigation() {
           <div
             style={{
               fontSize: '1.5rem',
-              fontWeight: 'bold',
+              fontWeight: 700,
               color: 'white',
+              letterSpacing: '-0.02em',
             }}
           >
             VEDORA
@@ -91,58 +113,81 @@ export default function Navigation() {
         {/* Desktop Navigation */}
         <div
           style={{
-            display: 'none',
+            display: 'flex',
             alignItems: 'center',
-            gap: '0.25rem',
+            gap: '0.125rem',
           }}
-          className="md-flex"
+          className="desktop-nav"
         >
           {navLinks.map((link) => (
             <button
               key={link.name}
               onClick={() => scrollToSection(link.target)}
               style={{
-                padding: '0.5rem 1rem',
+                padding: '0.625rem 1.25rem',
                 fontSize: '0.875rem',
                 fontWeight: 500,
-                color: 'rgba(255, 255, 255, 0.8)',
+                color: activeSection === link.target ? '#3b82f6' : 'rgba(255, 255, 255, 0.75)',
                 borderRadius: '0.5rem',
-                transition: 'all 0.2s',
+                transition: 'all 0.3s ease',
                 border: 'none',
                 background: 'none',
                 cursor: 'pointer',
+                position: 'relative',
+                fontFamily: 'system-ui, -apple-system, sans-serif',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.color = 'white'
-                e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'
+                e.currentTarget.style.color = '#3b82f6'
+                e.currentTarget.style.backgroundColor = 'rgba(59, 130, 246, 0.08)'
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.color = 'rgba(255, 255, 255, 0.8)'
+                e.currentTarget.style.color = activeSection === link.target ? '#3b82f6' : 'rgba(255, 255, 255, 0.75)'
                 e.currentTarget.style.backgroundColor = 'transparent'
               }}
             >
               {link.name}
+              {activeSection === link.target && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    bottom: '0',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: '60%',
+                    height: '2px',
+                    backgroundColor: '#3b82f6',
+                    borderRadius: '1px',
+                    boxShadow: '0 0 8px rgba(59, 130, 246, 0.6)',
+                  }}
+                />
+              )}
             </button>
           ))}
           <button
-            onClick={() => scrollToSection('.section:nth-of-type(6)')}
+            onClick={() => scrollToSection('contact')}
             style={{
-              marginLeft: '1rem',
-              padding: '0.5rem 1.5rem',
+              marginLeft: '1.25rem',
+              padding: '0.625rem 1.75rem',
               fontSize: '0.875rem',
-              fontWeight: 500,
+              fontWeight: 600,
               color: 'white',
               backgroundColor: '#2563eb',
               borderRadius: '9999px',
-              transition: 'all 0.2s',
+              transition: 'all 0.3s ease',
               border: 'none',
               cursor: 'pointer',
+              fontFamily: 'system-ui, -apple-system, sans-serif',
+              boxShadow: '0 0 20px rgba(59, 130, 246, 0.3)',
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = '#3b82f6'
+              e.currentTarget.style.boxShadow = '0 0 30px rgba(59, 130, 246, 0.5)'
+              e.currentTarget.style.transform = 'translateY(-1px)'
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = '#2563eb'
+              e.currentTarget.style.boxShadow = '0 0 20px rgba(59, 130, 246, 0.3)'
+              e.currentTarget.style.transform = 'translateY(0)'
             }}
           >
             Let's Talk
@@ -160,7 +205,7 @@ export default function Navigation() {
             background: 'none',
             cursor: 'pointer',
           }}
-          className="md-hidden"
+          className="mobile-menu-btn"
           aria-label="Toggle menu"
         >
           <svg
@@ -170,6 +215,8 @@ export default function Navigation() {
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
             {isMobileMenuOpen ? (
               <path d="M18 6L6 18M6 6l12 12" />
@@ -185,13 +232,13 @@ export default function Navigation() {
         <div
           style={{
             display: 'block',
-            backgroundColor: 'rgba(10, 14, 26, 0.95)',
-            backdropFilter: 'blur(12px)',
-            borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+            backgroundColor: 'rgba(10, 14, 26, 0.98)',
+            backdropFilter: 'blur(20px)',
+            borderTop: '1px solid rgba(255, 255, 255, 0.08)',
           }}
-          className="md-hidden"
+          className="mobile-menu"
         >
-          <div style={{ padding: '1rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: '60vh', overflowY: 'auto' }}>
+          <div style={{ padding: '1.5rem 2rem', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
             {navLinks.map((link) => (
               <button
                 key={link.name}
@@ -200,22 +247,23 @@ export default function Navigation() {
                   display: 'block',
                   width: '100%',
                   textAlign: 'left',
-                  padding: '0.75rem 1rem',
-                  fontSize: '0.875rem',
+                  padding: '0.875rem 1.25rem',
+                  fontSize: '0.95rem',
                   fontWeight: 500,
-                  color: 'rgba(255, 255, 255, 0.8)',
+                  color: activeSection === link.target ? '#3b82f6' : 'rgba(255, 255, 255, 0.8)',
                   borderRadius: '0.5rem',
-                  transition: 'all 0.2s',
+                  transition: 'all 0.2s ease',
                   border: 'none',
                   background: 'none',
                   cursor: 'pointer',
+                  fontFamily: 'system-ui, -apple-system, sans-serif',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.color = 'white'
-                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'
+                  e.currentTarget.style.color = '#3b82f6'
+                  e.currentTarget.style.backgroundColor = 'rgba(59, 130, 246, 0.08)'
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.color = 'rgba(255, 255, 255, 0.8)'
+                  e.currentTarget.style.color = activeSection === link.target ? '#3b82f6' : 'rgba(255, 255, 255, 0.8)'
                   e.currentTarget.style.backgroundColor = 'transparent'
                 }}
               >
@@ -223,27 +271,31 @@ export default function Navigation() {
               </button>
             ))}
             <button
-              onClick={() => scrollToSection('.section:nth-of-type(6)')}
+              onClick={() => scrollToSection('contact')}
               style={{
                 display: 'block',
                 width: '100%',
                 textAlign: 'center',
-                padding: '0.75rem 1.5rem',
-                marginTop: '1rem',
-                fontSize: '0.875rem',
-                fontWeight: 500,
+                padding: '0.875rem 2rem',
+                marginTop: '1.25rem',
+                fontSize: '0.95rem',
+                fontWeight: 600,
                 color: 'white',
                 backgroundColor: '#2563eb',
                 borderRadius: '9999px',
-                transition: 'all 0.2s',
+                transition: 'all 0.3s ease',
                 border: 'none',
                 cursor: 'pointer',
+                fontFamily: 'system-ui, -apple-system, sans-serif',
+                boxShadow: '0 0 20px rgba(59, 130, 246, 0.3)',
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = '#3b82f6'
+                e.currentTarget.style.boxShadow = '0 0 30px rgba(59, 130, 246, 0.5)'
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.backgroundColor = '#2563eb'
+                e.currentTarget.style.boxShadow = '0 0 20px rgba(59, 130, 246, 0.3)'
               }}
             >
               Let's Talk

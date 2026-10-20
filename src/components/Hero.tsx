@@ -62,14 +62,19 @@ export default function Hero() {
   }, [])
 
   const handleScroll = () => {
-    const firstSection = document.querySelector('.section')
-    if (firstSection) {
-      firstSection.scrollIntoView({ behavior: 'smooth' })
+    const servicesSection = document.getElementById('services')
+    if (servicesSection) {
+      const offset = 80
+      const elementPosition = servicesSection.getBoundingClientRect().top + window.pageYOffset
+      window.scrollTo({
+        top: elementPosition - offset,
+        behavior: 'smooth'
+      })
     }
   }
 
   return (
-    <div ref={heroRef} className="hero-section">
+    <div ref={heroRef} id="hero" className="hero-section">
       {/* Logo placeholder - add your logo image here */}
       <div ref={logoRef} style={{ marginBottom: '2rem', textAlign: 'center' }}>
         <img

@@ -21,7 +21,7 @@ export default function Contact() {
           trigger: sectionRef.current,
           start: 'top 80%',
           end: 'top 20%',
-          scrub: 1,
+          scrub: 0.3, // Reduced for smoother performance
         }
       })
 
@@ -37,7 +37,7 @@ export default function Contact() {
           trigger: formRef.current,
           start: 'top 85%',
           end: 'top 50%',
-          scrub: 0.8,
+          scrub: 0.3, // Reduced for smoother performance
         }
       })
     }, sectionRef)
@@ -47,14 +47,14 @@ export default function Contact() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    const mailtoLink = `mailto:vedorabuild@gmail.com?subject=Message from ${formData.name}&body=Name: ${formData.name}%0D%0AEmail: ${formData.email}%0D%0APhone: ${formData.phone}%0D%0ACompany: ${formData.company}%0D%0A%0D%0AProject Details:%0D%0A${formData.message}`
+    const mailtoLink = `mailto:vedorabuildofficial@gmail.com?subject=Message from ${formData.name}&body=Name: ${formData.name}%0D%0AEmail: ${formData.email}%0D%0APhone: ${formData.phone}%0D%0ACompany: ${formData.company}%0D%0A%0D%0AProject Details:%0D%0A${formData.message}`
     window.location.href = mailtoLink
     setStatus('Thank you for your message! We will respond within 16 hours.')
     setTimeout(() => setStatus(''), 5000)
   }
 
   return (
-    <div ref={sectionRef} className="section" style={{ minHeight: '100vh' }}>
+    <div ref={sectionRef} id="contact" className="section" style={{ minHeight: '100vh' }}>
       <div className="section-content">
         <h2>
           Get In Touch
@@ -73,7 +73,7 @@ export default function Contact() {
                   <Mail size={24} style={{ color: '#3b82f6' }} />
                   <div>
                     <div style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)' }}>Email</div>
-                    <div style={{ fontSize: '1rem' }}>vedorabuild@gmail.com</div>
+                    <div style={{ fontSize: '1rem' }}>vedorabuildofficial@gmail.com</div>
                   </div>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>

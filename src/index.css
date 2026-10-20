@@ -1,8 +1,13 @@
 @import "tailwindcss";
 
-body {
-  margin: 0;
-  padding: 0;
+/* Smooth scroll behavior for better UX */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Remove default margins (handled in cinematic.css) */
+* {
+  box-sizing: border-box;
 }
 
 input, textarea {
@@ -14,14 +19,21 @@ input:focus, textarea:focus {
   outline-offset: 2px;
 }
 
-/* Ensure text is always readable */
+/* Prevent text selection issues */
+::selection {
+  background-color: #3b82f6;
+  color: white;
+}
+
+/* Performance optimizations */
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Prevent text selection issues */
-::selection {
-  background-color: #3b82f6;
-  color: white;
+/* Prevent layout shifts */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }

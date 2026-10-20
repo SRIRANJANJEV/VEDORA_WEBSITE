@@ -19,10 +19,10 @@ function App() {
   const appRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    // Delay animation initialization to ensure DOM is ready
+    // Delay animation initialization to ensure DOM is fully ready
     const timer = setTimeout(() => {
       try {
-        // Global scroll-based spiral rotation (subtle, not distracting)
+        // Global scroll-based spiral rotation (optimized for performance)
         const spiralElements = document.querySelectorAll('.spiral-layer')
 
         spiralElements.forEach((element, index) => {
@@ -33,20 +33,24 @@ function App() {
               trigger: document.body,
               start: 'top top',
               end: 'bottom bottom',
-              scrub: 1.5,
+              scrub: 0.5, // Reduced from 1.5 for smoother performance
+              onUpdate: (self) => {
+                // Ensure smooth rendering during scroll
+                if (element instanceof HTMLElement) {
+                  element.style.willChange = 'transform'
+                }
+              }
             }
           })
         })
 
-        // Ensure text elements never rotate during scroll
+        // Ensure text elements remain stable during scroll
         const textElements = document.querySelectorAll('h1, h2, h3, h4, p, span, button, a, label, input, textarea')
         textElements.forEach((element) => {
-          gsap.set(element, {
-            force3D: true,
-            rotation: 0,
-            rotationX: 0,
-            rotationY: 0,
-          })
+          if (element instanceof HTMLElement) {
+            element.style.transform = 'translateZ(0)' // Hardware acceleration
+            element.style.backfaceVisibility = 'hidden'
+          }
         })
 
         // Cleanup
@@ -56,7 +60,7 @@ function App() {
       } catch (error) {
         console.error('Animation initialization error:', error)
       }
-    }, 100)
+    }, 300) // Increased delay to 300ms for better DOM readiness
 
     return () => {
       clearTimeout(timer)

@@ -20,7 +20,7 @@ export default function Founders() {
               trigger: sectionRef.current,
               start: 'top 80%',
               end: 'top 20%',
-              scrub: 1,
+              scrub: 0.3, // Reduced for smoother performance
             }
           })
         }
@@ -38,7 +38,7 @@ export default function Founders() {
               trigger: card,
               start: 'top 85%',
               end: 'top 50%',
-              scrub: 0.8,
+              scrub: 0.3, // Reduced for smoother performance
             }
           })
         })
@@ -99,7 +99,7 @@ export default function Founders() {
   }
 
   return (
-    <div ref={sectionRef} className="section">
+    <div ref={sectionRef} id="founders" className="section">
       <div className="section-content">
         <h2>
           Meet the Founders

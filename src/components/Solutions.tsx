@@ -19,7 +19,7 @@ export default function Solutions() {
           trigger: sectionRef.current,
           start: 'top 80%',
           end: 'top 20%',
-          scrub: 1,
+          scrub: 0.3, // Reduced for smoother performance
         }
       })
 
@@ -37,7 +37,7 @@ export default function Solutions() {
             trigger: card,
             start: 'top 85%',
             end: 'top 50%',
-            scrub: 0.8,
+            scrub: 0.3, // Reduced for smoother performance
           }
         })
       })
@@ -91,7 +91,7 @@ export default function Solutions() {
   ]
 
   return (
-    <div ref={sectionRef} className="section">
+    <div ref={sectionRef} id="solutions" className="section">
       <div className="section-content">
         <h2>
           Technical Solutions

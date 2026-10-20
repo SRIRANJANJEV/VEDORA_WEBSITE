@@ -1,5 +1,14 @@
 /* VEDORA Cinematic Whirl-Scroll Styles */
 
+/* Prevent white flash on scroll - set background immediately */
+html, body {
+  background: #0a0e1a;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 /* Global Container with 3D Perspective */
 .app-container {
   min-height: 100vh;
@@ -7,6 +16,19 @@
   overflow-x: hidden;
   background: linear-gradient(135deg, #0a0e1a 0%, #0d1321 50%, #131b2e 100%);
   position: relative;
+  will-change: transform;
+  transform: translateZ(0);
+  opacity: 0;
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* Navigation Styles */
@@ -225,6 +247,32 @@
   .md-space-y-0 > * + * {
     margin-top: 0;
   }
+
+  .desktop-nav {
+    display: flex !important;
+  }
+
+  .mobile-menu-btn {
+    display: none !important;
+  }
+
+  .mobile-menu {
+    display: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .desktop-nav {
+    display: none !important;
+  }
+
+  .mobile-menu-btn {
+    display: block !important;
+  }
+
+  .mobile-menu {
+    display: block !important;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -396,17 +444,21 @@ a {
   pointer-events: none;
   z-index: 0;
   overflow: hidden;
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 .spiral-layer {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) translateZ(0);
   border: 2px solid rgba(59, 130, 246, 0.4);
   border-radius: 50%;
   box-shadow: 0 0 40px rgba(59, 130, 246, 0.15), inset 0 0 40px rgba(59, 130, 246, 0.05);
   will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* Hero Section */
@@ -421,6 +473,9 @@ a {
   padding: 2rem;
   padding-top: 8rem;
   transform-style: preserve-3d;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .hero-logo {
@@ -490,6 +545,9 @@ a {
   padding: 6rem 2rem;
   transform-style: preserve-3d;
   will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .section-content {
@@ -564,6 +622,8 @@ a {
   position: relative;
   overflow: hidden;
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 .whirl-card::before {
@@ -756,5 +816,10 @@ html {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .app-container {
+    animation: none;
+    opacity: 1;
   }
 }

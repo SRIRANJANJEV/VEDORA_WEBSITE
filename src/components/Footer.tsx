@@ -3,10 +3,15 @@ import { Mail } from 'lucide-react'
 export default function Footer() {
   const currentYear = new Date().getFullYear()
 
-  const scrollToSection = (selector: string) => {
-    const element = document.querySelector(selector)
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id)
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
+      const offset = 80
+      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
+      window.scrollTo({
+        top: elementPosition - offset,
+        behavior: 'smooth'
+      })
     }
   }
 
@@ -92,7 +97,7 @@ export default function Footer() {
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               <li>
                 <button
-                  onClick={() => scrollToSection('.hero-section')}
+                  onClick={() => scrollToSection('hero')}
                   style={{
                     color: 'rgba(255, 255, 255, 0.6)',
                     transition: 'color 0.2s',
@@ -115,7 +120,7 @@ export default function Footer() {
               </li>
               <li>
                 <button
-                  onClick={() => scrollToSection('.section:nth-of-type(4)')}
+                  onClick={() => scrollToSection('about')}
                   style={{
                     color: 'rgba(255, 255, 255, 0.6)',
                     transition: 'color 0.2s',
@@ -138,7 +143,7 @@ export default function Footer() {
               </li>
               <li>
                 <button
-                  onClick={() => scrollToSection('.section:nth-of-type(1)')}
+                  onClick={() => scrollToSection('services')}
                   style={{
                     color: 'rgba(255, 255, 255, 0.6)',
                     transition: 'color 0.2s',
@@ -161,7 +166,7 @@ export default function Footer() {
               </li>
               <li>
                 <button
-                  onClick={() => scrollToSection('.section:nth-of-type(2)')}
+                  onClick={() => scrollToSection('solutions')}
                   style={{
                     color: 'rgba(255, 255, 255, 0.6)',
                     transition: 'color 0.2s',
@@ -184,7 +189,7 @@ export default function Footer() {
               </li>
               <li>
                 <button
-                  onClick={() => scrollToSection('.section:nth-of-type(3)')}
+                  onClick={() => scrollToSection('projects')}
                   style={{
                     color: 'rgba(255, 255, 255, 0.6)',
                     transition: 'color 0.2s',
@@ -207,7 +212,7 @@ export default function Footer() {
               </li>
               <li>
                 <button
-                  onClick={() => scrollToSection('.section:nth-of-type(5)')}
+                  onClick={() => scrollToSection('founders')}
                   style={{
                     color: 'rgba(255, 255, 255, 0.6)',
                     transition: 'color 0.2s',
@@ -230,7 +235,7 @@ export default function Footer() {
               </li>
               <li>
                 <button
-                  onClick={() => scrollToSection('.section:nth-of-type(6)')}
+                  onClick={() => scrollToSection('contact')}
                   style={{
                     color: 'rgba(255, 255, 255, 0.6)',
                     transition: 'color 0.2s',
@@ -270,7 +275,7 @@ export default function Footer() {
             </h3>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               <li style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '0.875rem' }}>
-                vedorabuild@gmail.com
+                vedorabuildofficial@gmail.com
               </li>
               <li style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '0.875rem' }}>
                 +91 9840468688

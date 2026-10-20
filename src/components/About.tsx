@@ -19,7 +19,7 @@ export default function About() {
           trigger: sectionRef.current,
           start: 'top 80%',
           end: 'top 20%',
-          scrub: 1,
+          scrub: 0.3, // Reduced for smoother performance
         },
       })
 
@@ -37,7 +37,7 @@ export default function About() {
             trigger: card,
             start: 'top 85%',
             end: 'top 50%',
-            scrub: 0.8,
+            scrub: 0.3, // Reduced for smoother performance
           },
         })
       })
@@ -47,7 +47,7 @@ export default function About() {
   }, [])
 
   return (
-    <div ref={sectionRef} className="section">
+    <div ref={sectionRef} id="about" className="section">
       <div className="section-content">
         <h2>About VEDORA</h2>
 
