@@ -27,44 +27,42 @@ function App() {
 
         spiralElements.forEach((element, index) => {
           gsap.to(element, {
-            rotation: 180 + (index * 30),
-            scale: 1 + (index * 0.02),
+            rotation: 180 + index * 30,
+            scale: 1 + index * 0.02,
             scrollTrigger: {
               trigger: document.body,
               start: 'top top',
               end: 'bottom bottom',
-              scrub: 0.5, // Reduced from 1.5 for smoother performance
-              onUpdate: (self) => {
+              scrub: 0.5,
+              onUpdate: () => {
                 // Ensure smooth rendering during scroll
                 if (element instanceof HTMLElement) {
                   element.style.willChange = 'transform'
                 }
-              }
-            }
+              },
+            },
           })
         })
 
         // Ensure text elements remain stable during scroll
-        const textElements = document.querySelectorAll('h1, h2, h3, h4, p, span, button, a, label, input, textarea')
+        const textElements = document.querySelectorAll(
+          'h1, h2, h3, h4, p, span, button, a, label, input, textarea'
+        )
+
         textElements.forEach((element) => {
           if (element instanceof HTMLElement) {
-            element.style.transform = 'translateZ(0)' // Hardware acceleration
+            element.style.transform = 'translateZ(0)'
             element.style.backfaceVisibility = 'hidden'
           }
         })
-
-        // Cleanup
-        return () => {
-          ScrollTrigger.getAll().forEach(trigger => trigger.kill())
-        }
       } catch (error) {
         console.error('Animation initialization error:', error)
       }
-    }, 300) // Increased delay to 300ms for better DOM readiness
+    }, 300)
 
     return () => {
       clearTimeout(timer)
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
     }
   }, [])
 
