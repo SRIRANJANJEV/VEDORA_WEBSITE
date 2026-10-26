@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
-import { GitBranch, Cpu, BarChart3, Workflow, Settings, Layers } from 'lucide-react'
+import { GitBranch, Cpu, BarChart, Settings, Layers, GitMerge } from 'lucide-react'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -65,13 +65,13 @@ export default function Solutions() {
       image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80'
     },
     {
-      icon: BarChart3,
+      icon: BarChart,
       title: 'Data & Analytics',
       description: 'Working with data processing and visualization. We explore techniques for handling, analyzing, and presenting data effectively.',
       image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80'
     },
     {
-      icon: Workflow,
+      icon: GitMerge,
       title: 'Automation Tools',
       description: 'Building tools to automate repetitive tasks. We create scripts and applications that streamline workflows and improve efficiency.',
       image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&q=80'

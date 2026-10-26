@@ -1,25 +1,29 @@
 import { useEffect, useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
+  const location = useLocation()
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50)
 
-      // Track active section for highlighting
-      const sections = ['hero', 'services', 'solutions', 'projects', 'about', 'founders', 'contact']
-      const scrollPosition = window.scrollY + 100
+      // Only track sections on homepage
+      if (location.pathname === '/') {
+        const sections = ['hero', 'services', 'solutions', 'projects', 'about', 'founders', 'founders-brain', 'contact']
+        const scrollPosition = window.scrollY + 100
 
-      for (const section of sections) {
-        const element = document.getElementById(section)
-        if (element) {
-          const { offsetTop, offsetHeight } = element
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveSection(section)
-            break
+        for (const section of sections) {
+          const element = document.getElementById(section)
+          if (element) {
+            const { offsetTop, offsetHeight } = element
+            if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+              setActiveSection(section)
+              break
+            }
           }
         }
       }
@@ -28,7 +32,7 @@ export default function Navigation() {
     window.addEventListener('scroll', handleScroll)
     handleScroll() // Initial check
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  }, [location.pathname])
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId)
@@ -44,12 +48,15 @@ export default function Navigation() {
   }
 
   const navLinks = [
-    { name: 'Home', target: 'hero' },
-    { name: 'About', target: 'about' },
-    { name: 'Services', target: 'services' },
-    { name: 'Solutions', target: 'solutions' },
-    { name: 'Projects', target: 'projects' },
-    { name: 'Contact', target: 'contact' },
+    { name: 'Home', target: 'hero', type: 'section' },
+    { name: 'About', target: 'about', type: 'section' },
+    { name: 'Services', target: 'services', type: 'section' },
+    { name: 'Solutions', target: 'solutions', type: 'section' },
+    { name: 'Projects', target: 'projects', type: 'section' },
+    { name: 'Founders Brain', target: 'founders-brain', type: 'section' },
+    { name: 'Contact', target: 'contact', type: 'section' },
+    { name: 'Promotion Partner', target: '/promotion-partner', type: 'route' },
+    { name: 'Wall of Love', target: '/wall-of-love', type: 'route' },
   ]
 
   return (
@@ -119,52 +126,116 @@ export default function Navigation() {
           }}
           className="desktop-nav"
         >
-          {navLinks.map((link) => (
-            <button
-              key={link.name}
-              onClick={() => scrollToSection(link.target)}
-              style={{
-                padding: '0.625rem 1.25rem',
-                fontSize: '0.875rem',
-                fontWeight: 500,
-                color: activeSection === link.target ? '#3b82f6' : 'rgba(255, 255, 255, 0.75)',
-                borderRadius: '0.5rem',
-                transition: 'all 0.3s ease',
-                border: 'none',
-                background: 'none',
-                cursor: 'pointer',
-                position: 'relative',
-                fontFamily: 'system-ui, -apple-system, sans-serif',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = '#3b82f6'
-                e.currentTarget.style.backgroundColor = 'rgba(59, 130, 246, 0.08)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = activeSection === link.target ? '#3b82f6' : 'rgba(255, 255, 255, 0.75)'
-                e.currentTarget.style.backgroundColor = 'transparent'
-              }}
-            >
-              {link.name}
-              {activeSection === link.target && (
-                <div
+          {navLinks.map((link) => {
+            if (link.type === 'route') {
+              return (
+                <Link
+                  key={link.name}
+                  to={link.target}
                   style={{
-                    position: 'absolute',
-                    bottom: '0',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: '60%',
-                    height: '2px',
-                    backgroundColor: '#3b82f6',
-                    borderRadius: '1px',
-                    boxShadow: '0 0 8px rgba(59, 130, 246, 0.6)',
+                    padding: '0.625rem 1.25rem',
+                    fontSize: '0.875rem',
+                    fontWeight: 500,
+                    color: location.pathname === link.target ? '#3b82f6' : 'rgba(255, 255, 255, 0.75)',
+                    borderRadius: '0.5rem',
+                    transition: 'all 0.3s ease',
+                    border: 'none',
+                    background: 'none',
+                    cursor: 'pointer',
+                    position: 'relative',
+                    fontFamily: 'system-ui, -apple-system, sans-serif',
+                    textDecoration: 'none',
                   }}
-                />
-              )}
-            </button>
-          ))}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = '#3b82f6'
+                    e.currentTarget.style.backgroundColor = 'rgba(59, 130, 246, 0.08)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = location.pathname === link.target ? '#3b82f6' : 'rgba(255, 255, 255, 0.75)'
+                    e.currentTarget.style.backgroundColor = 'transparent'
+                  }}
+                >
+                  {link.name}
+                  {location.pathname === link.target && (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        bottom: '0',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        width: '60%',
+                        height: '2px',
+                        backgroundColor: '#3b82f6',
+                        borderRadius: '1px',
+                        boxShadow: '0 0 8px rgba(59, 130, 246, 0.6)',
+                      }}
+                    />
+                  )}
+                </Link>
+              )
+            } else {
+              return (
+                <button
+                  key={link.name}
+                  onClick={() => {
+                    if (location.pathname !== '/') {
+                      window.location.href = '/'
+                      setTimeout(() => scrollToSection(link.target), 100)
+                    } else {
+                      scrollToSection(link.target)
+                    }
+                  }}
+                  style={{
+                    padding: '0.625rem 1.25rem',
+                    fontSize: '0.875rem',
+                    fontWeight: 500,
+                    color: activeSection === link.target ? '#3b82f6' : 'rgba(255, 255, 255, 0.75)',
+                    borderRadius: '0.5rem',
+                    transition: 'all 0.3s ease',
+                    border: 'none',
+                    background: 'none',
+                    cursor: 'pointer',
+                    position: 'relative',
+                    fontFamily: 'system-ui, -apple-system, sans-serif',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = '#3b82f6'
+                    e.currentTarget.style.backgroundColor = 'rgba(59, 130, 246, 0.08)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = activeSection === link.target ? '#3b82f6' : 'rgba(255, 255, 255, 0.75)'
+                    e.currentTarget.style.backgroundColor = 'transparent'
+                  }}
+                >
+                  {link.name}
+                  {activeSection === link.target && location.pathname === '/' && (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        bottom: '0',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        width: '60%',
+                        height: '2px',
+                        backgroundColor: '#3b82f6',
+                        borderRadius: '1px',
+                        boxShadow: '0 0 8px rgba(59, 130, 246, 0.6)',
+                      }}
+                    />
+                  )}
+                </button>
+              )
+            }
+          })}
           <button
-            onClick={() => scrollToSection('contact')}
+            onClick={() => {
+              if (location.pathname !== '/') {
+                window.location.href = '/'
+                setTimeout(() => scrollToSection('contact'), 100)
+              } else {
+                scrollToSection('contact')
+              }
+            }}
             style={{
               marginLeft: '1.25rem',
               padding: '0.625rem 1.75rem',
@@ -239,39 +310,91 @@ export default function Navigation() {
           className="mobile-menu"
         >
           <div style={{ padding: '1.5rem 2rem', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-            {navLinks.map((link) => (
-              <button
-                key={link.name}
-                onClick={() => scrollToSection(link.target)}
-                style={{
-                  display: 'block',
-                  width: '100%',
-                  textAlign: 'left',
-                  padding: '0.875rem 1.25rem',
-                  fontSize: '0.95rem',
-                  fontWeight: 500,
-                  color: activeSection === link.target ? '#3b82f6' : 'rgba(255, 255, 255, 0.8)',
-                  borderRadius: '0.5rem',
-                  transition: 'all 0.2s ease',
-                  border: 'none',
-                  background: 'none',
-                  cursor: 'pointer',
-                  fontFamily: 'system-ui, -apple-system, sans-serif',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = '#3b82f6'
-                  e.currentTarget.style.backgroundColor = 'rgba(59, 130, 246, 0.08)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = activeSection === link.target ? '#3b82f6' : 'rgba(255, 255, 255, 0.8)'
-                  e.currentTarget.style.backgroundColor = 'transparent'
-                }}
-              >
-                {link.name}
-              </button>
-            ))}
+            {navLinks.map((link) => {
+              if (link.type === 'route') {
+                return (
+                  <Link
+                    key={link.name}
+                    to={link.target}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    style={{
+                      display: 'block',
+                      width: '100%',
+                      textAlign: 'left',
+                      padding: '0.875rem 1.25rem',
+                      fontSize: '0.95rem',
+                      fontWeight: 500,
+                      color: location.pathname === link.target ? '#3b82f6' : 'rgba(255, 255, 255, 0.8)',
+                      borderRadius: '0.5rem',
+                      transition: 'all 0.2s ease',
+                      border: 'none',
+                      background: 'none',
+                      cursor: 'pointer',
+                      fontFamily: 'system-ui, -apple-system, sans-serif',
+                      textDecoration: 'none',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = '#3b82f6'
+                      e.currentTarget.style.backgroundColor = 'rgba(59, 130, 246, 0.08)'
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = location.pathname === link.target ? '#3b82f6' : 'rgba(255, 255, 255, 0.8)'
+                      e.currentTarget.style.backgroundColor = 'transparent'
+                    }}
+                  >
+                    {link.name}
+                  </Link>
+                )
+              } else {
+                return (
+                  <button
+                    key={link.name}
+                    onClick={() => {
+                      if (location.pathname !== '/') {
+                        window.location.href = '/'
+                        setTimeout(() => scrollToSection(link.target), 100)
+                      } else {
+                        scrollToSection(link.target)
+                      }
+                    }}
+                    style={{
+                      display: 'block',
+                      width: '100%',
+                      textAlign: 'left',
+                      padding: '0.875rem 1.25rem',
+                      fontSize: '0.95rem',
+                      fontWeight: 500,
+                      color: activeSection === link.target ? '#3b82f6' : 'rgba(255, 255, 255, 0.8)',
+                      borderRadius: '0.5rem',
+                      transition: 'all 0.2s ease',
+                      border: 'none',
+                      background: 'none',
+                      cursor: 'pointer',
+                      fontFamily: 'system-ui, -apple-system, sans-serif',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = '#3b82f6'
+                      e.currentTarget.style.backgroundColor = 'rgba(59, 130, 246, 0.08)'
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = activeSection === link.target ? '#3b82f6' : 'rgba(255, 255, 255, 0.8)'
+                      e.currentTarget.style.backgroundColor = 'transparent'
+                    }}
+                  >
+                    {link.name}
+                  </button>
+                )
+              }
+            })}
             <button
-              onClick={() => scrollToSection('contact')}
+              onClick={() => {
+                if (location.pathname !== '/') {
+                  window.location.href = '/'
+                  setTimeout(() => scrollToSection('contact'), 100)
+                } else {
+                  scrollToSection('contact')
+                }
+              }}
               style={{
                 display: 'block',
                 width: '100%',

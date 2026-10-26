@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { Routes, Route } from 'react-router-dom'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import Navigation from './components/Navigation'
@@ -9,8 +10,11 @@ import Solutions from './components/Solutions'
 import Projects from './components/Projects'
 import About from './components/About'
 import Founders from './components/Founders'
+import FoundersBrain from './components/FoundersBrain'
 import Contact from './components/Contact'
 import SpiralBackground from './components/SpiralBackground'
+import PromotionPartner from './components/PromotionPartner'
+import WallOfLove from './components/WallOfLove'
 import './styles/cinematic.css'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -70,13 +74,22 @@ function App() {
     <div ref={appRef} className="app-container">
       <Navigation />
       <SpiralBackground />
-      <Hero />
-      <Services />
-      <Solutions />
-      <Projects />
-      <About />
-      <Founders />
-      <Contact />
+      <Routes>
+        <Route path="/" element={
+          <>
+            <Hero />
+            <Services />
+            <Solutions />
+            <Projects />
+            <About />
+            <Founders />
+            <FoundersBrain />
+            <Contact />
+          </>
+        } />
+        <Route path="/promotion-partner" element={<PromotionPartner />} />
+        <Route path="/wall-of-love" element={<WallOfLove />} />
+      </Routes>
       <Footer />
     </div>
   )

@@ -1,17 +1,34 @@
 import { Mail } from 'lucide-react'
+import { Link, useLocation } from 'react-router-dom'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
+  const location = useLocation()
 
   const scrollToSection = (id: string) => {
-    const element = document.getElementById(id)
-    if (element) {
-      const offset = 80
-      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
-      window.scrollTo({
-        top: elementPosition - offset,
-        behavior: 'smooth'
-      })
+    if (location.pathname !== '/') {
+      window.location.href = '/'
+      setTimeout(() => {
+        const element = document.getElementById(id)
+        if (element) {
+          const offset = 80
+          const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
+          window.scrollTo({
+            top: elementPosition - offset,
+            behavior: 'smooth'
+          })
+        }
+      }, 100)
+    } else {
+      const element = document.getElementById(id)
+      if (element) {
+        const offset = 80
+        const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
+        window.scrollTo({
+          top: elementPosition - offset,
+          behavior: 'smooth'
+        })
+      }
     }
   }
 
@@ -255,6 +272,54 @@ export default function Footer() {
                 >
                   Contact
                 </button>
+              </li>
+              <li>
+                <Link
+                  to="/promotion-partner"
+                  style={{
+                    color: 'rgba(255, 255, 255, 0.6)',
+                    transition: 'color 0.2s',
+                    fontSize: '0.875rem',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: 0,
+                    textAlign: 'left',
+                    textDecoration: 'none',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'white'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'rgba(255, 255, 255, 0.6)'
+                  }}
+                >
+                  Promotion Partner
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/wall-of-love"
+                  style={{
+                    color: 'rgba(255, 255, 255, 0.6)',
+                    transition: 'color 0.2s',
+                    fontSize: '0.875rem',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: 0,
+                    textAlign: 'left',
+                    textDecoration: 'none',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'white'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'rgba(255, 255, 255, 0.6)'
+                  }}
+                >
+                  Wall of Love
+                </Link>
               </li>
             </ul>
           </div>
