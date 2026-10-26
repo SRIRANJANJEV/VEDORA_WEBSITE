@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import { ExternalLink, Shield, Trophy, Users, Award, Code, Terminal, Database, Lock, Globe, Zap, Link as LinkIcon } from 'lucide-react'
@@ -7,7 +6,6 @@ import { ExternalLink, Shield, Trophy, Users, Award, Code, Terminal, Database, L
 gsap.registerPlugin(ScrollTrigger)
 
 export default function PromotionPartner() {
-  const navigate = useNavigate()
   const heroRef = useRef<HTMLDivElement>(null)
 
   // Update page title and meta tags

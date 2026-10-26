@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import { Star, MessageSquare, Send, Filter } from 'lucide-react'
@@ -19,7 +18,6 @@ interface Review {
 }
 
 export default function WallOfLove() {
-  const navigate = useNavigate()
   const heroRef = useRef<HTMLDivElement>(null)
   const eyebrowRef = useRef<HTMLDivElement>(null)
   const headingRef = useRef<HTMLHeadingElement>(null)
